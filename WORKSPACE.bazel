@@ -1,0 +1,38 @@
+workspace(name = "coverage-example")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+TOOLCHAINS_LLVM_COMMIT = "b1a6c86b42ee2373574d0e6862d9d9d5405c3146"
+
+http_archive(
+    name = "toolchains_llvm",
+    integrity = "sha256-hdEfwQEvZaPD/gp6A9iDSIxxKOBYrn+ttFYjAHfFby8=",
+    strip_prefix = "bazel-toolchain-{commit}".format(
+        commit = TOOLCHAINS_LLVM_COMMIT,
+    ),
+    url = "https://github.com/oliverlee/bazel-toolchain/archive/{commit}.tar.gz".format(
+        commit = TOOLCHAINS_LLVM_COMMIT,
+    ),
+)
+
+load("@toolchains_llvm//toolchain:deps.bzl", "bazel_toolchain_dependencies")
+
+bazel_toolchain_dependencies()
+
+load("@toolchains_llvm//toolchain:rules.bzl", "llvm_toolchain")
+
+llvm_toolchain(
+    name = "llvm18_toolchain",
+    cxx_flags = {
+        "": [
+            "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE",
+            "-stdlib=libc++",
+            "-std=c++23",
+        ],
+    },
+    llvm_version = "18.1.8",
+)
+
+load("@llvm18_toolchain//:toolchains.bzl", "llvm_register_toolchains")
+
+llvm_register_toolchains()

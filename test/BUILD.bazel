@@ -1,0 +1,5 @@
+cc_test(
+    name = "lib_test",
+    srcs = ["lib_test.cpp"],
+    deps = ["//:lib"],
+)

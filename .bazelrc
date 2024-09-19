@@ -1,0 +1,5 @@
+common --enable_bzlmod=false
+
+coverage --combined_report=lcov
+coverage --experimental_generate_llvm_lcov
+coverage --copt=-ffile-compilation-dir=.
