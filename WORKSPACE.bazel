@@ -2,15 +2,15 @@ workspace(name = "coverage-example")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-TOOLCHAINS_LLVM_COMMIT = "b1a6c86b42ee2373574d0e6862d9d9d5405c3146"
+TOOLCHAINS_LLVM_COMMIT = "4ab573b1b87a57791ef2f9ccee71cbad80a2abb9"
 
 http_archive(
     name = "toolchains_llvm",
-    integrity = "sha256-hdEfwQEvZaPD/gp6A9iDSIxxKOBYrn+ttFYjAHfFby8=",
-    strip_prefix = "bazel-toolchain-{commit}".format(
+    integrity = "sha256-sCbaVUYAogO0jJ8N8CY4DYNdJLVLV0Z3TiPMKl81f44=",
+    strip_prefix = "toolchains_llvm-{commit}".format(
         commit = TOOLCHAINS_LLVM_COMMIT,
     ),
-    url = "https://github.com/oliverlee/bazel-toolchain/archive/{commit}.tar.gz".format(
+    url = "https://github.com/bazel-contrib/toolchains_llvm/archive/{commit}.tar.gz".format(
         commit = TOOLCHAINS_LLVM_COMMIT,
     ),
 )
@@ -28,6 +28,8 @@ llvm_toolchain(
             "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE",
             "-stdlib=libc++",
             "-std=c++23",
+            # https://github.com/bazelbuild/bazel/issues/14970#issuecomment-1894565761
+            "-ffile-compilation-dir=.",
         ],
     },
     llvm_version = "18.1.8",

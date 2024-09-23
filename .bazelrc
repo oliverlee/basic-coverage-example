@@ -2,4 +2,15 @@ common --enable_bzlmod=false
 
 coverage --combined_report=lcov
 coverage --experimental_generate_llvm_lcov
-coverage --copt=-ffile-compilation-dir=.
+
+coverage --test_env=VERBOSE_COVERAGE=1
+coverage --test_output=all
+
+coverage:gcov --experimental_generate_llvm_lcov=false
+coverage:gcov --features=-coverage
+coverage:gcov --copt=-coverage
+coverage:gcov --linkopt=-coverage
+coverage:gcov --test_env=GCOV_PREFIX_STRIP=10
+coverage:gcov --test_env=COVERAGE_GCOV_PATH=./external/llvm18_toolchain_llvm/bin/llvm-cov
+
+
